@@ -1,0 +1,153 @@
+%!TEX program=luatex
+% Falls ein 4:3 Format gewünscht ist, einfach `aspectratio=160` wegmachen
+\documentclass[8pt,xcolor={dvipsnames},aspectratio=169]{beamer}
+% Preamble (((
+\usepackage[T1]{fontenc}    % sorgt dafür, dass wir alle möglichen Zeichen in unserer Font drinhaben
+\usepackage{polyglossia}    % erlaubt lualatex sprachabhängige dinge zu machen. Worttrennungen etc. 
+\usepackage{csquotes}       % erlaubt den \enqoute{} Befehl, um korrekte Anführungszeichen um ein Textblock zu machen
+\usepackage[backend=biber, style=alphabetic]{biblatex} % Literaturverzeichnis 
+%\setdefaultlanguage[spelling=new]{german} % wir optimieren auf Deutschen Text
+%\setdefaultlanguage{english} % wir optimieren auf englischen Text
+\setdefaultlanguage[spelling=new]{german} % wir optimieren auf deutschen Text
+\usetheme[%
+    progressbar=frametitle,% Der Fortschrittsbalken in der Überschrift
+    sectionpage=progressbar% Zwischen Sections gibt es auch nochmal einen Fortschrittsbalken
+    ]{metropolis} % Das theme metropolis sieht halt nice aus
+\usefonttheme[onlymath]{serif} % Normalerweise wird Text in beamer in sans gesetzt. Auch Mathe. Das mag ich nicht...
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{tcolorbox}
+\usepackage{proof}
+% )))
+% ---------------------------- Viele Einstellungen für das Theme ---------------- (((
+\definecolor{tugreen}{RGB}{132,184,24}
+\definecolor{backgroundstuff}{RGB}{34,55,58}
+\setbeamercolor*{frametitle}{bg=tugreen, fg=white}
+\setbeamercolor{progress bar}{fg=tugreen, bg=tugreen!50!black}
+\setbeamercolor{block title default}{bg=tugreen!80!black, fg=white}
+\setbeamercolor{block body default}{bg=tugreen!20, fg=black}
+\setbeamercolor{block title example}{bg=black!60, fg=white}
+\setbeamercolor{block body example}{bg=black!90, fg=white}
+\setbeamercolor{block title alert}{bg=red!60, fg=white}
+\setbeamercolor{block body alert}{bg=red!90, fg=white}
+\makeatletter
+\setlength{\metropolis@titleseparator@linewidth}{2pt}
+\setlength{\metropolis@progressonsectionpage@linewidth}{2pt}
+\setlength{\metropolis@progressinheadfoot@linewidth}{2pt}
+\metroset{block=fill}
+\newcommand{\var}{\textbf{\tiny(Var)}}
+\newcommand{\app}{\textbf{\tiny(App)}}
+\newcommand{\abs}{\textbf{\tiny(Abs)}}
+\renewcommand{\implies}{\Rightarrow}
+\makeatother
+\setbeamertemplate{itemize item}[square]
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamercolor{itemize item}{fg=tugreen}
+\setbeamercolor{itemize subitem}{fg=tugreen}
+\setbeamerfont{description item}{series=\bfseries}
+\setbeamercolor{description item}{fg=tugreen}
+\tikzset{
+    invisible/.style={opacity=0,text opacity=0},
+    visible on/.style={alt={#1{}{invisible}}},
+    alt/.code args={<#1>#2#3}{%
+      \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+    },
+  }
+
+% ))) -------------------------------------------------------------------------------
+% Customizations (((
+\date{\today} % Das Datum des Vortrags\
+\bibliography{main} % Einbinden der Bibliography (falls vorhanden): main.bib
+
+\title{Titel des Vortrags}
+\subtitle{Untertitel}
+\author[V. Nachname]{Vorname Nachname}
+\institute{Miscatonic University\\Arkham, MA\\Faculty for the occult} % Oder was auch immer da reinkommt
+% )))
+\begin{document}
+\frame{\maketitle} % Einen Frame für den Titel
+% Inhaltsverzeichnis (((
+\begin{frame}{Inhalt} 
+  \setbeamertemplate{section in toc}[sections numbered]
+\tableofcontents[hideallsubsections]
+\end{frame}
+% )))
+% Itemizes und Enumerations (((
+\section{Itemizes und Enumerations}
+\subsection{Itemize}
+\begin{frame}{Itemize}    
+    \begin{itemize}
+        \item Item
+        \item[$\Rightarrow$] Item
+        \item Item
+            \begin{itemize}
+                \item Subitem
+                \item Subitem
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+\subsection{Enumeration}
+\begin{frame}{Enumeration}    
+    \begin{enumerate}
+        \item Item
+        \item Item
+        \item Item 
+            \begin{enumerate}
+                \item Subitem
+                \item Subitem
+            \end{enumerate}
+    \end{enumerate}
+\end{frame}
+\subsection{Description}
+\begin{frame}{Description}    
+    \begin{description}
+        \item[Desc:] Item
+        \item[Desc:] Item
+        \item[Desc:] Item 
+    \end{description}
+\end{frame}
+% )))
+% Aufteilungen (((
+\section{Aufteilungen}
+\begin{frame}{Aufteilungen} 
+    \begin{columns}
+        \column{.49\textwidth}
+    \begin{itemize}
+        \item Liste
+        \item Auf
+        \item Der
+        \item Einen 
+        \item Seite
+    \end{itemize}
+        \column{.49\textwidth}
+        \begin{figure}[htpb]
+        \begin{center}
+        \begin{tikzpicture}
+            \draw (0,0) circle (2cm);
+            \draw (-.75,.75) circle (0.1cm);
+            \draw (.75,.75) circle (0.1cm);
+            \draw[bend right=20] (-.75,-.75) to (.75,-.75);
+        \end{tikzpicture}
+        \end{center}
+        \caption{Smile auf der anderen}%
+        \end{figure}        
+\end{columns}
+\end{frame}
+% )))
+% Boxen (((
+\begin{frame}{Boxen}
+    \begin{tcolorbox}[title=Eine Box]
+        Boxen sind cool, siehe\cite{colorman}
+    \end{tcolorbox}
+\end{frame}
+% )))
+% Literatur (((
+\nocite{*}
+\section{References}
+\begin{frame}[allowframebreaks]{References}
+\printbibliography[heading=none]
+\end{frame}
+% )))
+\end{document}
+
+% vim:set foldmethod=marker foldmarker=(((,))) spelllang=de_de:
